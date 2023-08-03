@@ -31,4 +31,4 @@ app.use(errorHandler)
 
 
 
-app.listen(port,()=>{console.log(`server listening on port ${port}`)})
+app.listen(process.env.PORT,()=>{console.log(`server listening on port ${port}`)})
