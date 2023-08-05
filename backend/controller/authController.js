@@ -41,10 +41,10 @@ const login = async (req, res) => {
     throw new UnauthenticatedError("Invalid credentials,user not found");
   }
 //comparing the user password 
-
-
-
-
+const isPasswordCorrect = await user.comparePassword(password);
+if (!isPasswordCorrect) {
+  throw new CustomError.UnauthenticatedError("Invalid Credentials");
+}
   //creating tokenUser
   const tokenUser = createTokenUser(user);
   //creating token and attaching it to response
