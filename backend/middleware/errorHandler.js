@@ -1,5 +1,7 @@
-const { StatusCodes } = require("http-status-codes");
+
+/**const { StatusCodes } = require("http-status-codes");
 const errorHandlerMiddleware = (err, req, res, next) => {
+  console.log(err)
   let customError = {
     // set default
     statusCode: err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
@@ -32,15 +34,20 @@ const errorHandlerMiddleware = (err, req, res, next) => {
 
 module.exports = errorHandlerMiddleware;
 
-/**
- * const { CustomError } = require("../errors");
+
+ * 
+ * 
+ * 
+ *  
+ * */
+const { CustomAPIError } = require("../errors/customAPIError");
 const { StatusCodes } = require("http-status-codes");
 
 const errorHandler = (error, req, res, next) => {
   console.log(error);
 
-  if (error instanceof CustomError) {
-    return res.status(error.statusCode).json({ msg: error.message });
+  if (error instanceof CustomAPIError) {
+   return res.status(error.statusCode).json({ msg: error.message });
   }
   return res
     .status(StatusCodes.INTERNAL_SERVER_ERROR)
@@ -48,4 +55,4 @@ const errorHandler = (error, req, res, next) => {
 };
 
 module.exports = errorHandler;
- */
+
