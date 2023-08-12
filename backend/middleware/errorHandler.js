@@ -1,7 +1,8 @@
+/**
 
-/**const { StatusCodes } = require("http-status-codes");
-const errorHandlerMiddleware = (err, req, res, next) => {
-  console.log(err)
+const { StatusCodes } = require("http-status-codes");
+const errorHandler = (err, req, res, next) => {
+  console.log(err);
   let customError = {
     // set default
     statusCode: err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
@@ -32,28 +33,23 @@ const errorHandlerMiddleware = (err, req, res, next) => {
   return res.status(customError.statusCode).json({ msg: customError.msg });
 };
 
-module.exports = errorHandlerMiddleware;
+module.exports = errorHandler;
+ */
 
-
- * 
- * 
- * 
- *  
- * */
-const CustomAPIError= require("../errors/customAPIError");
+const CustomAPIError = require("../errors/customAPIError");
 const { StatusCodes } = require("http-status-codes");
 
-const errorHandler = (error, req, res, next) => {
- const  statusCode= error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR
-     console.log(error.message);
+const errorHandler = (err, req, res, next) => {
+  const statusCode = err.statusCodes || StatusCodes.INTERNAL_SERVER_ERROR;
+  console.log(err);
 
-  if (error instanceof CustomAPIError) {
-   return res.status(statusCode).json({ msg: error.message });
+ if (err instanceof CustomAPIError) {
+    
+    return res.status(statusCode).json({ msg: err.message });
   }
-  return res
+ return res
     .status(StatusCodes.INTERNAL_SERVER_ERROR)
     .json({ msg: "something went wrong....Try again later" });
 };
 
 module.exports = errorHandler;
-

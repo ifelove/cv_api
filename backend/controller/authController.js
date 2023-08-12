@@ -5,7 +5,6 @@ const {
   UnauthenticatedError,
 } = require("../errors/indexError");
 const { createTokenUser, attachCookiesToResponse } = require("../JWT");
-const { set } = require("mongoose");
 
 const register = async (req, res) => {
   const { name, email, password } = req.body;
