@@ -17,7 +17,7 @@ router.route("/showowner").get(showCurrentUser)
 router.route("/updateUser").patch(updateUser)
 router.route("/updatePassword").patch(updateUserPassword);
 
-router.route("/:id").delete(deleteUser);
+router.route("/:id").delete(authorizeRoles("admin"),deleteUser);
 router.route("/:id").get(getSingleUser)
 
 

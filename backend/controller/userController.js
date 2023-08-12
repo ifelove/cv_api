@@ -1,6 +1,10 @@
 const User = require("../model/User");
 const { StatusCodes } = require("http-status-codes");
-const { BadRequestError, NotFoundError } = require("../errors/indexError");
+const {
+  BadRequestError,
+  NotFoundError,
+  UnauthenticatedError,
+} = require("../errors/indexError");
 const {
   createTokenUser,
   attachCookiesToResponse,
@@ -45,9 +49,9 @@ const updateUser = async (req, res) => {
 };
 
 //updating user password
-const updateUserPassword = async(req, res) => {
+const updateUserPassword = async (req, res) => {
   const { oldPassword, newPassword } = req.body;
-  const id=req.user.userId
+  const id = req.user.userId;
   if (!oldPassword || !newPassword) {
     throw new BadRequestError(
       "Please provide the old password and new password"
@@ -58,16 +62,26 @@ const updateUserPassword = async(req, res) => {
       "Tne new password must be different from the old password"
     );
   }
-const user=await User.findOne({_id:id})
-if(!user){throw new BadRequestError("user not found")}
-//checking if the old password is correct
+  const user = await User.findOne({ _id: id });
+  if (!user) {
+    throw new BadRequestError("user not found");
+  }
+  //checking if the old password is correct
+  const isPasswordCorrect = await user.comparePassword(oldPassword);
+  if (!isPasswordCorrect) {
+    throw new UnauthenticatedError("incorrect old password");
+  }
+  user.password = newPassword;
 
-user.password=newPassword
-
-  res.json("updating user password");
+  user.save();
+  res.status(StatusCodes.OK).json({ msg: "Success! Password Updated." });
 };
-const deleteUser = (req, res) => {
-  res.json("deletinguser");
+const deleteUser = async (req, res) => {
+  const id=req.params.id
+
+  const user=await User.findOne({_id:id})
+  user.remove()
+ res.status(StatusCodes.OK).json({ msg: "user removed successfully" }); 
 };
 
 module.exports = {
