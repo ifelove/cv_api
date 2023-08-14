@@ -13,12 +13,12 @@ const {
 
 
 router.route("/").get(authenticateUser,authorizeRoles("admin"),getAllUsers)
-router.route("/showowner").get(showCurrentUser)
-router.route("/updateUser").patch(updateUser)
-router.route("/updatePassword").patch(updateUserPassword);
+router.route("/showowner").get(authenticateUser,showCurrentUser)
+router.route("/updateUser").patch(authenticateUser,updateUser)
+router.route("/updatePassword").patch(authenticateUser,updateUserPassword);
 
-router.route("/:id").delete(authorizeRoles("admin"),deleteUser);
-router.route("/:id").get(getSingleUser)
+router.route("/:id").delete(authenticateUser,authorizeRoles("admin"),deleteUser);
+router.route("/:id").get(authenticateUser,getSingleUser)
 
 
 module.exports=router

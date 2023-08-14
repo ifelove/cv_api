@@ -27,6 +27,7 @@ const authorizeRoles=(...roles)=>{
         if (!roles.includes ( req.user.role)){
 throw new UnauthorizedError("You are not authorized,Acess denied!! ")
         }
+        next()
     }
 
 

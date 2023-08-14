@@ -5,11 +5,8 @@ const {
   NotFoundError,
   UnauthenticatedError,
 } = require("../errors/indexError");
-const {
-  createTokenUser,
-  attachCookiesToResponse,
-  checkPermisions,
-} = require("../JWT");
+const { createTokenUser, attachCookiesToResponse } = require("../JWT");
+const checkPermisions = require("../JWT/checkPermision");
 
 //showing current user
 const showCurrentUser = (req, res) => {
@@ -28,7 +25,7 @@ const getSingleUser = async (req, res) => {
     throw new NotFoundError("user not found ");
   }
   checkPermisions(req.user, user._id);
-  res.status(StatusCodes.OK).json("user");
+  res.status(StatusCodes.OK).json(user);
 };
 
 //updating user
@@ -77,11 +74,17 @@ const updateUserPassword = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: "Success! Password Updated." });
 };
 const deleteUser = async (req, res) => {
-  const id=req.params.id
+  const id = req.params.id;
 
-  const user=await User.findOne({_id:id})
-  user.remove()
- res.status(StatusCodes.OK).json({ msg: "user removed successfully" }); 
+  const user = await User.findOneAndDelete({ _id: id });
+
+  
+  if (!user) {
+    throw new NotFoundError(`No product with id : ${id}`);
+  }
+ // console.log(user);
+ // await user.remove();
+  res.status(StatusCodes.OK).json({ msg: "user removed successfully" });
 };
 
 module.exports = {

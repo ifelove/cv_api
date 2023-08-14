@@ -7,7 +7,7 @@ const {
 const { createTokenUser, attachCookiesToResponse } = require("../JWT");
 
 const register = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password,role } = req.body;
   //another way to check for the existence of the email
   const isEmailAlreadyExist = await User.findOne({ email });
   if (isEmailAlreadyExist) {
@@ -16,8 +16,8 @@ const register = async (req, res) => {
     );
   }
   //making the first user that resgister to be the admin
-  const isFirstUser = (await User.countDocuments({})) === 0;
-  const role = isFirstUser ? "admin" : "user";
+ // const isFirstUser = (await User.countDocuments({})) === 0;
+//  const role = isFirstUser ? "admin" : "user";
   const user = await User.create({
     name: name,
     email: email,
@@ -41,8 +41,9 @@ const login = async (req, res) => {
   }
 //comparing the user password 
 const isPasswordCorrect = await user.comparePassword(password);
+console.log(isPasswordCorrect)
 if (!isPasswordCorrect) {
-  throw new CustomError.UnauthenticatedError("Invalid Credentials");
+  throw new UnauthenticatedError("Invalid Credentials");
 }
   //creating tokenUser
   const tokenUser = createTokenUser(user);
