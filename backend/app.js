@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const cookieParser = require("cookie-parser");
 const connectDB = require("./db/connectDB");
+const cors=require("cors")
 require("dotenv").config();
 require("express-async-errors");
 const notFound = require("./middleware/notFound");
@@ -13,6 +14,7 @@ const templateRoute = require("./routes/templateRoute");
 const resumeRoute = require("./routes/resumeRoute");
 
 app.use(express.json());
+app.use(cors())
 app.use(cookieParser(process.env.JWT_SECRET));
 app.use(express.static("./public"));
 app.use("/simple", express.static("./public/template/simple.html"));

@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const {authenticateUser,authorizeRoles}=require("../middleware/authentication")
 
 const {
   getAllTemplate,
@@ -9,11 +10,11 @@ const {
   updateTemplate,
 } = require("../controller/templateController");
 
-router.route("/").get(getAllTemplate).post(createTempelate);
+router.route("/").get(getAllTemplate).post(authenticateUser,authorizeRoles("admin"),createTempelate);
 router
   .route("/:id")
-  .get(getSingleTemplate)
-  .patch(updateTemplate)
-  .delete(deleteTemplate);
+  .get(authenticateUser,getSingleTemplate)
+  .patch(authenticateUser,authorizeRoles("admin"),updateTemplate)
+  .delete(authenticateUser,authorizeRoles("admin"),deleteTemplate);
 
 module.exports = router;
