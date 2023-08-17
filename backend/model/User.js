@@ -28,9 +28,9 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
-UserSchema.pre("remove", async function (next) {
-  console.log("hi");
-});
+//UserSchema.pre("remove", async function (next) {
+//  console.log("hi");
+//});
 
 
 UserSchema.pre("save", async function () {
