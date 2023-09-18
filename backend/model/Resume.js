@@ -5,7 +5,7 @@ const ResumeSchema = new mongoose.Schema(
     contact: new mongoose.Schema({
       firstname: { type: String },
       othername: { type: String },
-      surnmame: { type: String },
+      surname: { type: String },
       address: { type: String },
       email: {
         type: String,
@@ -38,8 +38,8 @@ const ResumeSchema = new mongoose.Schema(
         graduationDate: { type: Date },
       }),
     ],
-    award: { type: String },
-    certification: { type: String },
+    award: { type: [String] },
+    certification: { type: [String] },
     createdBy: { type: mongoose.Schema.ObjectId, ref: "User" },
     template: {
       type: String,
@@ -47,7 +47,11 @@ const ResumeSchema = new mongoose.Schema(
         values: ["simple", "creative", "professional", "custom", "modern"],
         message: "{VALUE} is not supported",
       },
+      default:"simple"
     },
+    extraActivity:{type:[String]},
+    language:{type:[String]},
+    hobby:{type:[String]}
   },
 
   { timestamps: true }

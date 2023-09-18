@@ -22,7 +22,7 @@ app.use("/simple", express.static("./public/template/simple.html"));
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/users/", userRoute);
 app.use("/api/v1/templates", templateRoute);
-app.use("/api/v1/templates", resumeRoute);
+app.use("/api/v1/resumes", resumeRoute);
 
 app.use(notFound);
 app.use(errorHandler);
